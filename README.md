@@ -1,0 +1,1 @@
+A library to retrive formatted financial statement data
