@@ -4,6 +4,7 @@ package com.dando.stockboss.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dando.stockboss.BalanceSheetEntry;
 import com.dando.stockboss.CashFlowEntry;
 import com.dando.stockboss.Exchange;
 import com.dando.stockboss.logic.DataExtractionLogic;
@@ -34,8 +35,11 @@ public class MorningstarClient {
 		return extractionLogic.extractCashFlows(raw);
 	}
 	
-	public Object getBalanceSheets(Exchange exchange, String ticker, boolean annual) {
-		String raw = getStockData(exchange.getStringName(), ticker, "bs", annual ? "3" : "12");
-		return null;
+	public List<BalanceSheetEntry> getBalanceSheets(Exchange exchange, String ticker, boolean annual) {
+		String raw = getStockData(exchange.getStringName(), ticker, "bs", annual ? "12" : "3");
+		if(raw == null) {
+			return new ArrayList<>();
+		}
+		return extractionLogic.extractBalanceSheets(raw);
 	}
 }

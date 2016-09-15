@@ -1,12 +1,11 @@
 package com.dando.stockboss;
 
-import java.sql.Date;
+import java.util.Date;
 
 import lombok.Data;
 
 @Data
 public class BalanceSheetEntry {
-	private Date periodStart;
 	private Date periodEnd;
 	private long cashAndEquivalents;
 	private long totalAssets;

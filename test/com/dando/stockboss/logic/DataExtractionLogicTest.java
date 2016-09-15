@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.dando.stockboss.BalanceSheetEntry;
 import com.dando.stockboss.CashFlowEntry;
 
 public class DataExtractionLogicTest {
@@ -50,19 +51,76 @@ public class DataExtractionLogicTest {
 				+ "Operating cash flow,5658000,4096000,4874000,3913000,4940000,17823000\n"
 				+ "Capital expenditure,-171000,-286000,-166000,-177000,-204000,-833000\n"
 				+ "Free cash flow,5487000,3810000,4708000,3736000,4736000,16990000";
-		
+
 		DataExtractionLogic logic = new DataExtractionLogic();
 		List<CashFlowEntry> cashFlows = logic.extractCashFlows(cashFlowRaw);
 		Assert.assertTrue(cashFlows.size() == 5);
 		Date periodEnd = cashFlows.get(0).getPeriodEnd();
-		for(CashFlowEntry cf : cashFlows) {
+		for (CashFlowEntry cf : cashFlows) {
 			Assert.assertTrue(cf.getPeriodEnd().getTime() <= periodEnd.getTime());
 			periodEnd = cf.getPeriodEnd();
 		}
-		
+
 		Assert.assertTrue(cashFlows.get(4).getNetCashInvested() == -3552000000l);
 		Assert.assertTrue(cashFlows.get(2).getDividendPaid() == -614000000l);
 		Assert.assertTrue(cashFlows.get(3).getNetCashChange() == 6548000000l);
+	}
+
+	@Test
+	public void testBalanceSheetExtraction() {
+		String balanceSheetRaw = "GILEAD SCIENCES INC  (GILD) CashFlowFlag BALANCE SHEET\n"
+				+ "Fiscal year ends in December. USD in thousands except per share data.,2015-06,2015-09,2015-12,2016-03,2016-06\n"
+				+ "Assets\n" + "Current assets\n" + "Cash\n"
+				+ "Cash and cash equivalents,7417000,13965000,12851000,6315000,6485000\n"
+				+ "Short-term investments,1194000,1749000,1756000,2004000,2267000\n"
+				+ "Total cash,8611000,15714000,14607000,8319000,8752000\n"
+				+ "Receivables,5331000,6105000,5854000,6163000,5752000\n"
+				+ "Inventories,2039000,1988000,1955000,1880000,1862000\n"
+				+ "Deferred income taxes,833000,894000,828000,830000,835000\n"
+				+ "Prepaid expenses,726000,1209000,1013000,1024000,635000\n"
+				+ "Other current assets,553000,,506000,1051000,517000\n"
+				+ "Total current assets,18093000,25910000,24763000,19267000,18353000\n" + "Non-current assets\n"
+				+ "\"Property, plant and equipment\"\n" + "\"Gross property, plant and equipment\",,,3039000,,\n"
+				+ "Accumulated Depreciation,,,-763000,,\n"
+				+ "\"Net property, plant and equipment\",1899000,2143000,2276000,2431000,2599000\n"
+				+ "Equity and other investments,6056000,9400000,11601000,13003000,15864000\n"
+				+ "Goodwill,1172000,1172000,1172000,1172000,1172000\n"
+				+ "Intangible assets,10660000,10454000,10247000,9923000,9713000\n"
+				+ "Deferred income taxes,177000,291000,324000,292000,433000\n"
+				+ "Other long-term assets,1110000,1267000,1456000,1677000,1846000\n"
+				+ "Total non-current assets,21074000,24727000,27076000,28498000,31627000\n"
+				+ "Total assets,39167000,50637000,51839000,47765000,49980000\n"
+				+ "Liabilities and stockholders' equity\n" + "Liabilities\n" + "Current liabilities\n"
+				+ "Short-term debt,352000,331000,983000,1745000,700000\n"
+				+ "Accounts payable,1571000,1239000,1178000,945000,1122000\n"
+				+ "Taxes payable,356000,159000,65000,51000,368000\n"
+				+ "Accrued liabilities,6145000,7275000,7225000,7640000,7909000\n"
+				+ "Deferred revenues,501000,356000,440000,529000,345000\n"
+				+ "Total current liabilities,8925000,9360000,9891000,10910000,10444000\n" + "Non-current liabilities\n"
+				+ "Long-term debt,11922000,21894000,21195000,21077000,21427000\n"
+				+ "Deferred taxes liabilities,36000,30000,,,\n"
+				+ "Minority interest,347000,530000,579000,621000,579000\n"
+				+ "Total non-current liabilities,13955000,23863000,23414000,23457000,24000000\n"
+				+ "Total liabilities,22880000,33223000,33305000,34367000,34444000\n" + "Stockholders' equity\n"
+				+ "Common stock,2000,1000,1000,1000,1000\n"
+				+ "Additional paid-in capital,,285000,444000,516000,632000\n"
+				+ "Retained earnings,16038000,16961000,18001000,13045000,14949000\n"
+				+ "Accumulated other comprehensive income,247000,167000,88000,-164000,-46000\n"
+				+ "Total stockholders' equity,16287000,17414000,18534000,13398000,15536000\n"
+				+ "Total liabilities and stockholders' equity,39167000,50637000,51839000,47765000,49980000";
+		
+		DataExtractionLogic logic = new DataExtractionLogic();
+		List<BalanceSheetEntry> balanceSheetsFlows = logic.extractBalanceSheets(balanceSheetRaw);
+		Assert.assertTrue(balanceSheetsFlows.size() == 5);
+		Date periodEnd = balanceSheetsFlows.get(0).getPeriodEnd();
+		for (BalanceSheetEntry bf : balanceSheetsFlows) {
+			Assert.assertTrue(bf.getPeriodEnd().getTime() <= periodEnd.getTime());
+			periodEnd = bf.getPeriodEnd();
+		}
+
+		Assert.assertTrue(balanceSheetsFlows.get(4).getTotalAssets() == 39167000000l);
+		Assert.assertTrue(balanceSheetsFlows.get(2).getTotalLiabilities() == 33305000000l);
+		Assert.assertTrue(balanceSheetsFlows.get(3).getCashAndEquivalents() == 13965000000l);
 	}
 
 }
