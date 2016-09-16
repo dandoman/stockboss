@@ -9,12 +9,14 @@ import com.dando.stockboss.CashFlowEntry;
 import com.dando.stockboss.Exchange;
 import com.dando.stockboss.IncomeEntry;
 import com.dando.stockboss.client.MorningstarClient;
+import com.dando.stockboss.client.NasdaqFTPClient;
 import com.dando.stockboss.client.YahooFinanceClient;
 
 public class ClientTest {
 	
 	MorningstarClient client = new MorningstarClient();
 	YahooFinanceClient financeClient = new YahooFinanceClient();
+	NasdaqFTPClient nasdaqClient = new NasdaqFTPClient();
 	
 	@Test
 	public void testCashflow() {
@@ -33,6 +35,14 @@ public class ClientTest {
 	public void testIncomeStatement() {
 		List<IncomeEntry> incomeStatements = client.getIncomeStatements(Exchange.NASDAQ, "aapl", true);
 		incomeStatements.forEach(is -> System.out.println(is));
+	}
+	
+	@Test
+	public void testNasdaqClient() {
+		List<String> allCompanyTickers = nasdaqClient.getAllCompanyTickers();
+		for(String s : allCompanyTickers) {
+			System.out.println(s);
+		}
 	}
 	
 	
