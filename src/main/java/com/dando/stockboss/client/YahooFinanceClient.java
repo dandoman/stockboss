@@ -9,8 +9,8 @@ public class YahooFinanceClient {
 	
 	public StockData getStockData(String ticker) {
 		String res = httpClient.getBlogText(String.format(parametrizedUrl, ticker));
-		String [] parts = res.split(",");
-		if("N/A".equalsIgnoreCase(parts[0])) {
+		String [] parts = res.replaceAll("\\s", "").split(",");
+		if("N/A".equalsIgnoreCase(parts[0]) || "N/A".equalsIgnoreCase(parts[1])) {
 			return null;
 		}
 		

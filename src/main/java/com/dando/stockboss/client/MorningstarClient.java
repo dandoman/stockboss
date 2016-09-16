@@ -25,24 +25,24 @@ public class MorningstarClient {
 	
 	public List<IncomeEntry> getIncomeStatements(Exchange exchange, String ticker, boolean annual) {
 		String raw = getStockData(exchange.getStringName(), ticker, "is", annual ? "12" : "3");
-		if(raw == null) {
-			return new ArrayList<>();
+		if(raw == null || raw.isEmpty()) {
+			return null;
 		}
 		return extractionLogic.extractIncomeStatements(raw);
 	}
 	
 	public List<CashFlowEntry> getCashFlowStatements(Exchange exchange, String ticker, boolean annual) {
 		String raw = getStockData(exchange.getStringName(), ticker, "cf", annual ? "12" : "3");
-		if(raw == null) {
-			return new ArrayList<>();
+		if(raw == null || raw.isEmpty()) {
+			return null;
 		}
 		return extractionLogic.extractCashFlows(raw);
 	}
 	
 	public List<BalanceSheetEntry> getBalanceSheets(Exchange exchange, String ticker, boolean annual) {
 		String raw = getStockData(exchange.getStringName(), ticker, "bs", annual ? "12" : "3");
-		if(raw == null) {
-			return new ArrayList<>();
+		if(raw == null || raw.isEmpty()) {
+			return null;
 		}
 		return extractionLogic.extractBalanceSheets(raw);
 	}

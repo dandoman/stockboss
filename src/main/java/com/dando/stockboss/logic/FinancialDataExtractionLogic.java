@@ -19,6 +19,7 @@ public class FinancialDataExtractionLogic {
 		CashFlowEntry [] cashFlows = new CashFlowEntry [5];
 		for (int i = 0; i < 5; i++) {
 			cashFlows[i] = new CashFlowEntry();
+			cashFlows[i].setPeriodEnd(DateTime.now().toDate()); //There's a bug with these sometimes not getting set, this is a bandaid
 		}
 		@Cleanup Scanner textScanner = new Scanner(raw);
 		while(textScanner.hasNextLine()) {
@@ -95,6 +96,7 @@ public class FinancialDataExtractionLogic {
 		BalanceSheetEntry [] balanceSheetss = new BalanceSheetEntry [5];
 		for (int i = 0; i < 5; i++) {
 			balanceSheetss[i] = new BalanceSheetEntry();
+			balanceSheetss[i].setPeriodEnd(DateTime.now().toDate());
 		}
 		@Cleanup Scanner textScanner = new Scanner(raw);
 		while(textScanner.hasNextLine()) {
@@ -160,6 +162,7 @@ public class FinancialDataExtractionLogic {
 		IncomeEntry [] incomes = new IncomeEntry [5];
 		for (int i = 0; i < 5; i++) {
 			incomes[i] = new IncomeEntry();
+			incomes[i].setPeriodEnd(DateTime.now().toDate());
 		}
 		@Cleanup Scanner textScanner = new Scanner(raw);
 		while(textScanner.hasNextLine()) {

@@ -1,12 +1,9 @@
 package com.dando.stockboss.client;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -58,6 +55,9 @@ public class NasdaqFTPClient {
 		@Cleanup Scanner scanner = new Scanner(new ByteArrayInputStream(byteArray));
 		while(scanner.hasNextLine()) {
 			String line = scanner.nextLine();
+			if(line.contains("File Creation Time")) {
+				continue;
+			}
 			String [] parts = line.split("\\|");
 			tickers.add(parts[0].trim());
 		}

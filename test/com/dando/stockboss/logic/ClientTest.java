@@ -22,7 +22,7 @@ public class ClientTest {
 	public void testCashflow() {
 		List<CashFlowEntry> cashFlowStatements = client.getCashFlowStatements(Exchange.NASDAQ, "aapl", true);
 		cashFlowStatements.forEach(cf -> System.out.println(cf));
-		System.out.println(financeClient.getStockData("aapl"));
+		System.out.println(financeClient.getStockData("aaxj"));
 	}
 	
 	@Test

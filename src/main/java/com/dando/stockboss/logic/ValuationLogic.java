@@ -1,6 +1,11 @@
 package com.dando.stockboss.logic;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import com.dando.stockboss.BalanceSheetEntry;
 import com.dando.stockboss.Exchange;
 import com.dando.stockboss.IncomeEntry;
@@ -14,9 +19,20 @@ public class ValuationLogic {
 	private YahooFinanceClient stockDataClient = new YahooFinanceClient();
 	
 	public Long davesGhettoValuation(Exchange exchange, String ticker) {
+		ExecutorService executor = Executors.newCachedThreadPool();
+		Future<List<BalanceSheetEntry>> futureBalanceSheets = executor.submit(() -> financialDocsClient.getBalanceSheets(exchange, ticker, false));
+		Future<List<IncomeEntry>> futureIncomeStatements = executor.submit(() -> financialDocsClient.getIncomeStatements(exchange, ticker, false));
 		
-		List<BalanceSheetEntry> balanceSheets = financialDocsClient.getBalanceSheets(exchange, ticker, false);
-		List<IncomeEntry> incomeStatements = financialDocsClient.getIncomeStatements(exchange, ticker, false);
+		List<BalanceSheetEntry> balanceSheets;
+		List<IncomeEntry> incomeStatements; 
+		try {
+			balanceSheets = futureBalanceSheets.get();
+			incomeStatements = futureIncomeStatements.get();
+		} catch (InterruptedException | ExecutionException e) {
+			//FUckuppp
+			return null;
+		}
+		
 		if(balanceSheets == null || incomeStatements == null) {
 			return null;
 		}
