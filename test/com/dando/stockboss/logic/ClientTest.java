@@ -9,15 +9,18 @@ import com.dando.stockboss.CashFlowEntry;
 import com.dando.stockboss.Exchange;
 import com.dando.stockboss.IncomeEntry;
 import com.dando.stockboss.client.MorningstarClient;
+import com.dando.stockboss.client.YahooFinanceClient;
 
 public class ClientTest {
 	
 	MorningstarClient client = new MorningstarClient();
+	YahooFinanceClient financeClient = new YahooFinanceClient();
 	
 	@Test
 	public void testCashflow() {
 		List<CashFlowEntry> cashFlowStatements = client.getCashFlowStatements(Exchange.NASDAQ, "aapl", true);
 		cashFlowStatements.forEach(cf -> System.out.println(cf));
+		System.out.println(financeClient.getStockData("aapl"));
 	}
 	
 	@Test
@@ -31,4 +34,6 @@ public class ClientTest {
 		List<IncomeEntry> incomeStatements = client.getIncomeStatements(Exchange.NASDAQ, "aapl", true);
 		incomeStatements.forEach(is -> System.out.println(is));
 	}
+	
+	
 }

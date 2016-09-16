@@ -8,14 +8,14 @@ import com.dando.stockboss.BalanceSheetEntry;
 import com.dando.stockboss.CashFlowEntry;
 import com.dando.stockboss.Exchange;
 import com.dando.stockboss.IncomeEntry;
-import com.dando.stockboss.logic.DataExtractionLogic;
+import com.dando.stockboss.logic.FinancialDataExtractionLogic;
 
 import lombok.Setter;
 
 public class MorningstarClient {
 
 	private HttpTextClient textClient = new HttpTextClient();
-	private DataExtractionLogic extractionLogic = new DataExtractionLogic();
+	private FinancialDataExtractionLogic extractionLogic = new FinancialDataExtractionLogic();
 	private static final String parametrizedUrl = "http://financials.morningstar.com/ajax/ReportProcess4CSV.html?&t=%s:%s&culture=en-US&cur=&reportType=%s&period=%s&dataType=A&order=asc&columnYear=5&curYearPart=1st5year&rounding=3&view=raw&denominatorView=raw&number=2";
 
 	

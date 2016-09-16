@@ -13,7 +13,7 @@ import com.dando.stockboss.IncomeEntry;
 
 import lombok.Cleanup;
 
-public class DataExtractionLogic {
+public class FinancialDataExtractionLogic {
 	
 	public List<CashFlowEntry> extractCashFlows(String raw) {
 		CashFlowEntry [] cashFlows = new CashFlowEntry [5];

@@ -53,7 +53,7 @@ public class DataExtractionLogicTest {
 				+ "Capital expenditure,-171000,-286000,-166000,-177000,-204000,-833000\n"
 				+ "Free cash flow,5487000,3810000,4708000,3736000,4736000,16990000";
 
-		DataExtractionLogic logic = new DataExtractionLogic();
+		FinancialDataExtractionLogic logic = new FinancialDataExtractionLogic();
 		List<CashFlowEntry> cashFlows = logic.extractCashFlows(cashFlowRaw);
 		Assert.assertTrue(cashFlows.size() == 5);
 		Date periodEnd = cashFlows.get(0).getPeriodEnd();
@@ -110,7 +110,7 @@ public class DataExtractionLogicTest {
 				+ "Total stockholders' equity,16287000,17414000,18534000,13398000,15536000\n"
 				+ "Total liabilities and stockholders' equity,39167000,50637000,51839000,47765000,49980000";
 
-		DataExtractionLogic logic = new DataExtractionLogic();
+		FinancialDataExtractionLogic logic = new FinancialDataExtractionLogic();
 		List<BalanceSheetEntry> balanceSheetsFlows = logic.extractBalanceSheets(balanceSheetRaw);
 		Assert.assertTrue(balanceSheetsFlows.size() == 5);
 		Date periodEnd = balanceSheetsFlows.get(0).getPeriodEnd();
@@ -148,7 +148,7 @@ public class DataExtractionLogicTest {
 				+ "Diluted,5773099,5682516,5594127,5540886,5472781,5572577\n"
 				+ "EBITDA,17758000,18419000,27803000,16940000,13404000,76566000";
 
-		DataExtractionLogic logic = new DataExtractionLogic();
+		FinancialDataExtractionLogic logic = new FinancialDataExtractionLogic();
 		List<IncomeEntry> incomeStatements = logic.extractIncomeStatements(incomeStatementRaw);
 		Assert.assertTrue(incomeStatements.size() == 5);
 		Date periodEnd = incomeStatements.get(0).getPeriodEnd();
