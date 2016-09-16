@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.dando.stockboss.BalanceSheetEntry;
 import com.dando.stockboss.CashFlowEntry;
 import com.dando.stockboss.Exchange;
+import com.dando.stockboss.IncomeEntry;
 import com.dando.stockboss.client.MorningstarClient;
 
 public class ClientTest {
@@ -23,5 +24,11 @@ public class ClientTest {
 	public void testBalanceSheet() {
 		List<BalanceSheetEntry> balanceSheets = client.getBalanceSheets(Exchange.NASDAQ, "aapl", true);
 		balanceSheets.forEach(bs -> System.out.println(bs));
+	}
+	
+	@Test
+	public void testIncomeStatement() {
+		List<IncomeEntry> incomeStatements = client.getIncomeStatements(Exchange.NASDAQ, "aapl", true);
+		incomeStatements.forEach(is -> System.out.println(is));
 	}
 }

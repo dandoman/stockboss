@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.dando.stockboss.BalanceSheetEntry;
 import com.dando.stockboss.CashFlowEntry;
+import com.dando.stockboss.IncomeEntry;
 
 public class DataExtractionLogicTest {
 
@@ -108,7 +109,7 @@ public class DataExtractionLogicTest {
 				+ "Accumulated other comprehensive income,247000,167000,88000,-164000,-46000\n"
 				+ "Total stockholders' equity,16287000,17414000,18534000,13398000,15536000\n"
 				+ "Total liabilities and stockholders' equity,39167000,50637000,51839000,47765000,49980000";
-		
+
 		DataExtractionLogic logic = new DataExtractionLogic();
 		List<BalanceSheetEntry> balanceSheetsFlows = logic.extractBalanceSheets(balanceSheetRaw);
 		Assert.assertTrue(balanceSheetsFlows.size() == 5);
@@ -121,6 +122,44 @@ public class DataExtractionLogicTest {
 		Assert.assertTrue(balanceSheetsFlows.get(4).getTotalAssets() == 39167000000l);
 		Assert.assertTrue(balanceSheetsFlows.get(2).getTotalLiabilities() == 33305000000l);
 		Assert.assertTrue(balanceSheetsFlows.get(3).getCashAndEquivalents() == 13965000000l);
+	}
+
+	@Test
+	public void testIncomeStatementExtraction() {
+		String incomeStatementRaw = "APPLE INC  (AAPL) CashFlowFlag INCOME STATEMENT\n"
+				+ "Fiscal year ends in September. USD in thousands except per share data.,2015-06,2015-09,2015-12,2016-03,2016-06,TTM\n"
+				+ "Revenue,49605000,51501000,75872000,50557000,42358000,220288000\n"
+				+ "Cost of revenue,29924000,30953000,45449000,30636000,26252000,133290000\n"
+				+ "Gross profit,19681000,20548000,30423000,19921000,16106000,86998000\n" + "Operating expenses\n"
+				+ "Research and development,2034000,2220000,2404000,2511000,2560000,9695000\n"
+				+ "\"Sales, General and administrative\",3564000,3705000,3848000,3423000,3441000,14417000\n"
+				+ "Total operating expenses,5598000,5925000,6252000,5934000,6001000,24112000\n"
+				+ "Operating income,14083000,14623000,24171000,13987000,10105000,62886000\n"
+				+ "Interest Expense,201000,238000,276000,321000,409000,1244000\n"
+				+ "Other income (expense),591000,677000,678000,476000,773000,2604000\n"
+				+ "Income before taxes,14473000,15062000,24573000,14142000,10469000,64246000\n"
+				+ "Provision for income taxes,3796000,3938000,6212000,3626000,2673000,16449000\n"
+				+ "Net income from continuing operations,10677000,11124000,18361000,10516000,7796000,47797000\n"
+				+ "Net income,10677000,11124000,18361000,10516000,7796000,47797000\n"
+				+ "Net income available to common shareholders,10677000,11124000,18361000,10516000,7796000,47797000\n"
+				+ "Earnings per share\n" + "Basic,1.86,1.98,3.30,1.91,1.43,8.64\n"
+				+ "Diluted,1.85,1.97,3.28,1.90,1.42,8.59\n" + "Weighted average shares outstanding\n"
+				+ "Basic,5729886,5646918,5558930,5514381,5443058,5540822\n"
+				+ "Diluted,5773099,5682516,5594127,5540886,5472781,5572577\n"
+				+ "EBITDA,17758000,18419000,27803000,16940000,13404000,76566000";
+
+		DataExtractionLogic logic = new DataExtractionLogic();
+		List<IncomeEntry> incomeStatements = logic.extractIncomeStatements(incomeStatementRaw);
+		Assert.assertTrue(incomeStatements.size() == 5);
+		Date periodEnd = incomeStatements.get(0).getPeriodEnd();
+		for (IncomeEntry bf : incomeStatements) {
+			Assert.assertTrue(bf.getPeriodEnd().getTime() <= periodEnd.getTime());
+			periodEnd = bf.getPeriodEnd();
+		}
+
+		Assert.assertTrue(incomeStatements.get(4).getEbitda() == 17758000000l);
+		Assert.assertTrue(incomeStatements.get(2).getOperatingIncome() == 24171000000l);
+		Assert.assertTrue(incomeStatements.get(3).getNetIncome() == 11124000000l);
 	}
 
 }

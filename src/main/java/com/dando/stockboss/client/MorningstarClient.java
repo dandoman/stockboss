@@ -7,6 +7,7 @@ import java.util.List;
 import com.dando.stockboss.BalanceSheetEntry;
 import com.dando.stockboss.CashFlowEntry;
 import com.dando.stockboss.Exchange;
+import com.dando.stockboss.IncomeEntry;
 import com.dando.stockboss.logic.DataExtractionLogic;
 
 import lombok.Setter;
@@ -22,9 +23,12 @@ public class MorningstarClient {
 		return textClient.getBlogText(String.format(parametrizedUrl, exchange, ticker, reportType, period));
 	}
 	
-	public Object getIncomeStatements(Exchange exchange, String ticker, boolean annual) {
-		String raw = getStockData(exchange.getStringName(), ticker, "is", annual ? "3" : "12");
-		return null;
+	public List<IncomeEntry> getIncomeStatements(Exchange exchange, String ticker, boolean annual) {
+		String raw = getStockData(exchange.getStringName(), ticker, "is", annual ? "12" : "3");
+		if(raw == null) {
+			return new ArrayList<>();
+		}
+		return extractionLogic.extractIncomeStatements(raw);
 	}
 	
 	public List<CashFlowEntry> getCashFlowStatements(Exchange exchange, String ticker, boolean annual) {
