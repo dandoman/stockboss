@@ -9,7 +9,9 @@ public class ValuationTest {
 	
 	@Test
 	public void testGhettoValuation() {
-		Long davesGhettoValuation = valuationLogic.davesGhettoValuation(Exchange.NASDAQ, "GILD");
-		System.out.println("Value of GILD is: " + davesGhettoValuation);
+		String ticker = "BMO";
+		Exchange exchange = Exchange.TSE;
+		Long davesGhettoValuation = valuationLogic.davesGhettoValuation(exchange, ticker);
+		System.out.println("Value of " + ticker + " is: " + davesGhettoValuation);
 	}
 }

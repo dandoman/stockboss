@@ -17,8 +17,7 @@ public class ValuationLogic {
 		
 		List<BalanceSheetEntry> balanceSheets = financialDocsClient.getBalanceSheets(exchange, ticker, false);
 		List<IncomeEntry> incomeStatements = financialDocsClient.getIncomeStatements(exchange, ticker, false);
-		StockData stockData = stockDataClient.getStockData(ticker);
-		if(balanceSheets == null || incomeStatements == null || stockData == null) {
+		if(balanceSheets == null || incomeStatements == null) {
 			return null;
 		}
 		
