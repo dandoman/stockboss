@@ -196,6 +196,33 @@ public class FinancialDataExtractionLogic {
 				continue; 
 			}
 			
+			if(line.contains("Revenue,")) {
+				String [] tokenizedLines = Arrays.copyOfRange(rawTokenizedLines, 1, 6);
+				for(int i = 0; i < tokenizedLines.length; i++) {
+					long amount = tokenizedLines[i] == null || tokenizedLines[i].isEmpty() ? 0 : Long.parseLong(tokenizedLines[i]) * 1000;
+					incomes[i].setRevenue(amount);  //Numbers are in thousands as per format
+				}
+				continue; 
+			}
+			
+			if(line.contains("Cost of revenue,")) {
+				String [] tokenizedLines = Arrays.copyOfRange(rawTokenizedLines, 1, 6);
+				for(int i = 0; i < tokenizedLines.length; i++) {
+					long amount = tokenizedLines[i] == null || tokenizedLines[i].isEmpty() ? 0 : Long.parseLong(tokenizedLines[i]) * 1000;
+					incomes[i].setCostOfRevenue(amount);  //Numbers are in thousands as per format
+				}
+				continue; 
+			}
+			
+			if(line.contains("Income before taxes,")) {
+				String [] tokenizedLines = Arrays.copyOfRange(rawTokenizedLines, 1, 6);
+				for(int i = 0; i < tokenizedLines.length; i++) {
+					long amount = tokenizedLines[i] == null || tokenizedLines[i].isEmpty() ? 0 : Long.parseLong(tokenizedLines[i]) * 1000;
+					incomes[i].setPretaxIncome(amount);  //Numbers are in thousands as per format
+				}
+				continue; 
+			}
+			
 			if(line.contains("EBITDA")) {
 				String [] tokenizedLines = Arrays.copyOfRange(rawTokenizedLines, 1, 6);
 				for(int i = 0; i < tokenizedLines.length; i++) {

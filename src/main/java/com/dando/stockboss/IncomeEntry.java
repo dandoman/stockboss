@@ -10,4 +10,7 @@ public class IncomeEntry {
 	private long operatingIncome;
 	private long netIncome;
 	private long ebitda;
+	private long revenue;
+	private long costOfRevenue;
+	private long pretaxIncome;
 }
